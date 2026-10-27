@@ -1,47 +1,55 @@
-AI Copilot — Local run & test
+# Omnix AI Copilot
 
-Overview
---------
-Small Spring Boot chat application (JSP UI + JPA). This repo includes fixes to avoid frontend 404s for missing session IDs, test harness using H2, and a small SQL script to detect/clean invalid DB rows.
+Spring Boot chat application with a JSP frontend, Spring Data JPA, MySQL, and Google Gemini API integration.
 
-Quick run (Windows)
--------------------
-1) Build (optional):
+## Prerequisites
 
-```cmd
-.\mvnw.cmd -DskipTests package
+- JDK 17
+- MySQL with a database named `copilot`
+- A newly generated Gemini API key
+- Maven, or use the included Maven Wrapper
+
+## Configure environment variables
+
+The application reads these environment variables and does not require secrets to be stored in source files:
+
+- `GEMINI_API_KEY`: your Gemini API key
+- `DB_URL`: JDBC URL, for example `jdbc:mysql://localhost:3306/copilot`
+- `DB_USERNAME`: MySQL username
+- `DB_PASSWORD`: MySQL password
+- `SERVER_PORT`: optional, defaults to `8080`
+
+On Windows PowerShell, set them in the terminal you will use to start the app:
+
+```powershell
+$env:GEMINI_API_KEY = "YOUR_NEW_GEMINI_API_KEY"
+$env:DB_URL = "jdbc:mysql://localhost:3306/copilot"
+$env:DB_USERNAME = "root"
+$env:DB_PASSWORD = "YOUR_MYSQL_PASSWORD"
 ```
 
-2) Run:
+Use your own values. Never commit real credentials.
 
-```cmd
-.\mvnw.cmd -DskipTests spring-boot:run
+## Run
+
+From this directory:
+
+```powershell
+.`mvnw.cmd` spring-boot:run
 ```
 
-Open http://localhost:9090/chat
+Or, if Maven is installed:
 
-Run tests (uses in-memory H2):
-
-```cmd
-.\mvnw.cmd test
+```powershell
+mvn spring-boot:run
 ```
 
-What I added
-------------
-- Frontend defensive checks in `src/main/webapp/WEB-INF/views/chat.jsp` to avoid calls to `/api/copilot/history/` or `/api/copilot/delete/` without a session ID.
-- Backend handlers in `src/main/java/com/ai/copilot/controller/ChatController.java` to return 400 JSON when `/history` or `/delete` are called without a path variable (helps debugging).
-- `ViewController` now serves `/favicon.ico` with 204 No Content to silence 404 noise in the browser console.
-- Integration tests: `src/test/java/com/ai/copilot/controller/ChatControllerWebTest.java` (uses MockMvc and H2 in-memory DB).
-- Test config: `src/test/resources/application.properties` to use H2 (create-drop) for tests.
-- SQL helper: `tools/cleanup-empty-sessions.sql` — find and optionally delete rows with empty `session_id`.
+Open [http://localhost:8080/chat](http://localhost:8080/chat).
 
-Notes
------
-- Tests use H2 by default so you don't need a running MySQL instance to run them locally.
-- If you prefer an actual favicon file, drop `favicon.ico` into `src/main/resources/static/` — currently the app serves 204 for `/favicon.ico`.
+## Tests
 
-If you'd like I can:
-- Run the server here and stream logs while you click around the UI (if you want log traces), or
-- Prepare a small Flyway migration to enforce NOT NULL on `session_id` and clean invalid rows.
+```powershell
+.`mvnw.cmd` test
+```
 
-
+The test profile uses H2 when the test configuration is active.
