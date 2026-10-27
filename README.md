@@ -21,41 +21,41 @@ A Java and Spring Boot AI chat application with a JSP interface, MySQL persisten
 
 ## Project structure
 
-The Spring Boot application is in `ai-copilot/`.
+The Spring Boot application is in \`ai-copilot/\`.
 
 ## Prerequisites
 
 - JDK 17
 - MySQL
-- A Google Gemini API key from Google AI Studio
+- A newly generated Google Gemini API key
 - Maven (or use the included Maven Wrapper)
 
 ## Configuration
 
-The app reads credentials from environment variables. Do not commit API keys or database passwords.
+The app reads credentials from environment variables. Never commit API keys or database passwords.
+
+Create a MySQL database named \`copilot\` before starting the application.
 
 Required environment variables:
 
 | Variable | Purpose | Example |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Google Gemini API key | Set your own key locally |
-| `DB_URL` | JDBC connection URL | `jdbc:mysql://localhost:3306/copilot` |
-| `DB_USERNAME` | MySQL username | `root` |
-| `DB_PASSWORD` | MySQL password | Set your own password |
-| `SERVER_PORT` | Optional HTTP port | `8080` |
-
-Create a MySQL database named `copilot` before starting the application.
+| \`GEMINI_API_KEY\` | Google Gemini API key | Set your own key locally |
+| \`DB_URL\` | JDBC connection URL | \`jdbc:mysql://localhost:3306/copilot\` |
+| \`DB_USERNAME\` | MySQL username | \`root\` |
+| \`DB_PASSWORD\` | MySQL password | Set your own password |
+| \`SERVER_PORT\` | Optional HTTP port | \`8080\` |
 
 ### Windows PowerShell example
 
-Set these values in the terminal where you will run the app. Replace the example values with your own secrets:
+Run these in the terminal where you will start the app. Replace the placeholders with your own values:
 
-```powershell
+~~~powershell
 $env:GEMINI_API_KEY = "YOUR_NEW_GEMINI_API_KEY"
 $env:DB_URL = "jdbc:mysql://localhost:3306/copilot"
 $env:DB_USERNAME = "root"
 $env:DB_PASSWORD = "YOUR_MYSQL_PASSWORD"
-```
+~~~
 
 Do not paste real secrets into README files, source code, screenshots, issues, or commits.
 
@@ -63,28 +63,24 @@ Do not paste real secrets into README files, source code, screenshots, issues, o
 
 From the repository root:
 
-```powershell
+~~~powershell
 cd ai-copilot
-.`mvnw.cmd` spring-boot:run
-```
+.\mvnw.cmd spring-boot:run
+~~~
 
-If Maven is installed globally, you can use:
-
-```powershell
-mvn spring-boot:run
-```
+If Maven is installed globally, you can instead run \`mvn spring-boot:run\` from \`ai-copilot/\`.
 
 Open [http://localhost:8080/chat](http://localhost:8080/chat).
 
 ## Run tests
 
-From `ai-copilot/`:
+From \`ai-copilot/\`:
 
-```powershell
-.`mvnw.cmd` test
-```
+~~~powershell
+.\mvnw.cmd test
+~~~
 
-The test configuration is set up to use an in-memory H2 database where configured.
+The test configuration uses an in-memory H2 database when the test profile is active.
 
 ## Screenshots
 
